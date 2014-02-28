@@ -14,6 +14,6 @@ while len(sequence) < position:
 	if len(sequence) == 1:
 		sequence.append(1)
 	else:
-		sequence.append( sequence[len(sequence)-2] + sequence[len(sequence)-1])
+		sequence.append( sequence[-2] + sequence[-1])
 	
 print sequence
