@@ -12,8 +12,8 @@ import time
 #-------------------------
 l = []
 
-for i in range( 0, 1000 ):
-	l.append(random.randint(1,1000))
+for i in range( 0, 5000 ):
+	l.append(random.randint(1,5000))
 
 print l
 
@@ -45,8 +45,40 @@ while changed:
 			
 bubble_sort_time = (time.clock() - start )
 
+
+#------------------------
+# merge sort - found improvs on stack overflow   
+#------------------------
+t3 = list(l)
+
+start = time.clock()
+
+def msort(x):
+	result = []
+	if len(x) < 2:
+		return x
+	mid = int(len(x)/2)
+	y = msort(x[:mid])
+	z = msort(x[mid:])
+	i = 0
+	j = 0
+	while i < len(y) and j < len(z):
+		if y[i] > z[j]:
+			result.append(z[j])
+			j += 1
+		else:
+			result.append(y[i])
+			i += 1
+	result += y[i:]
+	result += z[j:]
+	return result
+
+msort( t3 )
+
+merge_sort_time = (time.clock() - start )
+
 print "python: ", py_sort_time
 print "bubble: ", bubble_sort_time
-
+print "merge: ", merge_sort_time
 
 	
