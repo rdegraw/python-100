@@ -8,14 +8,14 @@
 #		and snooze time.
 #   The screen shall have a toggle to turn on
 #		the alarm and off
-# 	A new window should pop-up to allow alarm to
-#		be dismissed or snooze button
+# 	Snooze button on bottom that does nothing if alarm 
+# 		is not going off, else snoozes
 #	Set the sound wave for the alarm
 #-----------------------------------------------------
 from datetime import datetime
 import winsound
 import time
-import wx, os
+import wx
 
 class AlarmFrame(wx.Frame):
 	def __init__(self, parent, title):
@@ -24,6 +24,8 @@ class AlarmFrame(wx.Frame):
 		
 		# Setting up the menu.
 		filemenu = wx.Menu()
+		menuSetAlarm = filemenu.Append(wx.ID_NEW, "Set Alarm", " Set time for alarm")
+		menuSetSnooze = filemenu.Append(wx.ID_EDIT, "Set Snooze", " Set length of time for snooze")
 		menuAbout = filemenu.Append(wx.ID_ABOUT, "&About"," Information about this program")
 		menuExit = filemenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program")
 		
@@ -32,40 +34,59 @@ class AlarmFrame(wx.Frame):
 		self.SetMenuBar(menuBar)
 		
 		#Events
+		self.Bind(wx.EVT_MENU, self.OnAbout, menuSetAlarm)
+		self.Bind(wx.EVT_MENU, self.OnAbout, menuSetSnooze)
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
 		self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
+
+		panel = wx.Panel(self)
+	
+		#Add components to the panel
+		self.time = wx.StaticText( panel, label="Time will go here")
+		snoozebutton = wx.Button(self, wx.ID_CLEAR, "snooze")
+		self.Bind(wx.EVT_BUTTON, self.Snooze, snoozebutton)
+		
+		self.alarmtoggle = wx.CheckBox(self, label = "alarm ")
+		self.Bind( wx.EVT_CHECKBOX, self.ToggleAlarm, self.alarmtoggle)
+		
+		self.sizerbuttons = wx.BoxSizer(wx.HORIZONTAL)
+		self.sizerbuttons.Add(self.alarmtoggle, 0, wx.ALIGN_LEFT)
+		self.sizerbuttons.Add(snoozebutton, 1, wx.EXPAND)
+		
+		self.sizer = wx.BoxSizer(wx.VERTICAL)
+		self.sizer.Add(self.time, 3, wx.ALIGN_CENTER )
+		self.sizer.Add(self.sizerbuttons, 1, wx.GROW)
+		
+		#Layout sizers
+		self.SetSizer(self.sizer)
+		self.SetAutoLayout(1)
+		self.sizer.Fit(self)
 		
 		self.Show()
 		
-		def OnAbout(self,e):
-			# Create a message dialog box
-			dlg = wx.MessageDialog(self, " An Alarm Clock using wxPython", "About Alarm Clock", wx.OK)
-			dlg.ShowModal() # Shows it
-			dlg.Destroy() # finally destroy it when finished.
+	def OnAbout(self,e):
+		# Create a message dialog box
+		dlg = wx.MessageDialog(self, " An Alarm Clock using wxPython", "About Alarm Clock", wx.OK)
+		dlg.ShowModal() # Shows it
+		dlg.Destroy() # finally destroy it when finished.
  
-		def OnExit(self,e):
-			self.Close(True)  # Close the frame.
+	def OnExit(self,e):
+		self.Close(True)  # Close the frame.
 
-class AlarmPanel(wx.Panel):
-	
-	def __init__(self, parent):
-		wx.Panel.__init__(self, parent)
-		self.text_title = wx.StaticText(self, label="Alarm Clock", pos=(20,30))
-		
-		self.logger = wx.TextCtrl(self, pos=(300,20), size=(200,300), style=wx.TE_MULTILINE | wx.TE_READONLY)
-		
-		# Checkbox
-		self.alarm = wx.CheckBox( self, label = "Alarm On ", pos=(20, 50))
-		self.Bind( wx.EVT_CHECKBOX, self.EvtCheckBox, self.alarm )
-		
-			
-	def EvtCheckBox(self, e):
-		self.logger.AppendText('EvtCheckBox: %d\n' %e.Checked())
+	def Snooze(self,e):
+		# Create a message dialog box
+		dlg = wx.MessageDialog(self, " Hit Snooze", "Snooze Dialog", wx.OK)
+		dlg.ShowModal() # Shows it
+		dlg.Destroy() # finally destroy it when finished.
+
+	def ToggleAlarm(self,e):
+		# Create a message dialog box
+		dlg = wx.MessageDialog(self, " Toggle Alarm", "Alarm Dialog", wx.OK)
+		dlg.ShowModal() # Shows it
+		dlg.Destroy() # finally destroy it when finished.
 	
 app = wx.App(False)
 frame = AlarmFrame(None, title="Alarm Clock")
-#panel = AlarmPanel(frame)
-frame.Show()
 app.MainLoop()
 
 #print datetime.now().time()
