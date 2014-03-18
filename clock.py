@@ -2,15 +2,16 @@
 #
 # Alarm clock
 #
-#	Open a window with the time that changes
-#		every second. 
-#   Filemenu will open a dialog to set an alarm 
-#		and snooze time.
-#   The screen shall have a toggle to turn on
-#		the alarm and off
-# 	Snooze button on bottom that does nothing if alarm 
-# 		is not going off, else snoozes
-#	Set the sound wave for the alarm
+"""	Open a window with the time that changes
+		every second. 
+    Filemenu will open a dialog to set an alarm 
+		and snooze time.
+    The screen shall have a toggle to turn on
+ 		the alarm and off
+  	Snooze button on bottom that does nothing if alarm 
+  		is not going off, else snoozes
+ 	Set the sound wave for the alarm """
+	
 #-----------------------------------------------------
 from datetime import datetime
 import winsound

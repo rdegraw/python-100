@@ -39,9 +39,10 @@ while changed:
 	for x in range( 0, len(t2)-1 ):
 		if t2[x] > t2[x+1]:
 			changed = True
-			temp = t2[x+1]
-			t2[x+1] = t2[x]
-			t2[x] = temp
+			t2[x], t2[x+1] = t2[x+1], t2[x]
+		#	temp = t2[x+1]
+		#	t2[x+1] = t2[x]
+		#	t2[x] = temp
 			
 bubble_sort_time = (time.clock() - start )
 
